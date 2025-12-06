@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Playwright Java QA Framework" parallel="false" verbose="2">
+    
+    <!-- UI Tests Suite -->
+    <test name="UI Tests">
+        <groups>
+            <run>
+                <include name="smoke"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.qaautomation.ui.tests.SubmitTest"/>
+        </classes>
+    </test>
+    
+    <!-- API Tests Suite -->
+    <test name="API Tests">
+        <groups>
+            <run>
+                <include name="smoke"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.qaautomation.api.tests.EmployeeApiTest">
+            </class>
+        </classes>
+    </test>
+    
+</suite>

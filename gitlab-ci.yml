@@ -1,0 +1,83 @@
+stages:
+  - build
+  - test
+  - report
+
+variables:
+  MAVEN_CLI_OPTS: "-s .m2/settings.xml -DskipTests"
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+# Cache Maven dependencies
+cache:
+  paths:
+    - .m2/repository/
+    - target/
+
+build:
+  image: maven:3.9.4-eclipse-temurin-11
+  stage: build
+  script:
+    - echo "Building Playwright Java QA Framework..."
+    - mvn clean compile
+    - echo "Build completed successfully"
+  artifacts:
+    paths:
+      - target/
+    expire_in: 1 day
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# Run UI and API Tests
+test:
+  image: mcr.microsoft.com/playwright/java:v1.45.0
+  stage: test
+  script:
+    - echo "Starting test execution..."
+    - apt-get update && apt-get install -y maven
+    - mvn clean test -DsuiteXmlFile=src/test/resources/testng.xml
+    - echo "Tests completed"
+  artifacts:
+    paths:
+      - target/
+      - logs/
+      - allure-results/
+    expire_in: 30 days
+    reports:
+      junit: target/surefire-reports/*.xml
+  only:
+    - merge_requests
+    - main
+    - develop
+  allow_failure: false
+
+# Generate Allure Report
+generate_report:
+  image: maven:3.9.4-eclipse-temurin-11
+  stage: report
+  script:
+    - echo "Generating Allure Report..."
+    - mvn allure:report
+    - echo "Report generated successfully"
+  artifacts:
+    paths:
+      - target/site/allure-maven/
+    expire_in: 30 days
+  only:
+    - main
+    - develop
+
+# Docker Build (Optional)
+build_docker:
+  image: docker:latest
+  stage: build
+  services:
+    - docker:dind
+  script:
+    - echo "Building Docker image..."
+    - docker build -t playwright-qa-framework:latest .
+    - echo "Docker image built successfully"
+  only:
+    - main
+    - tags
