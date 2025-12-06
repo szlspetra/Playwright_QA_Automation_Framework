@@ -43,7 +43,7 @@ jobs:
           echo "Build completed successfully"
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-target
           path: target/
@@ -112,7 +112,7 @@ jobs:
           echo "Report generated successfully"
 
       - name: Upload Allure report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: target/site/allure-maven/
