@@ -35,7 +35,7 @@ A comprehensive, production-ready test automation framework combining **Playwrig
 
 ### 1. Clone Repository
 ```bash
-git clone https://gitlab.com/szlspetra/playwright_pilot.git
+git clone https://github.com/szlspetra/Playwright_QA_Automation_Framework.git
 cd playwright_pilot
 ```
 
