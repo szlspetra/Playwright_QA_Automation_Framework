@@ -72,8 +72,10 @@ jobs:
           mvn clean test -DsuiteXmlFile=src/test/resources/testng.xml
           echo "Tests completed"
 
+      
+
       - name: Upload test artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: |
@@ -83,7 +85,7 @@ jobs:
 
       - name: Upload JUnit test reports
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: junit-reports
           path: target/surefire-reports/*.xml
