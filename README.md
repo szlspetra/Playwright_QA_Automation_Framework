@@ -157,7 +157,10 @@ docker build -t playwright-qa:latest .
 
 **Run tests in container:**
 ```bash
+Linux:
 docker run --rm -v $(pwd)/results:/app/allure-results playwright-qa:latest
+Windows:
+docker run --rm -v "${PWD}/results:/app/allure-results" playwright-qa:latest
 ```
 
 ### GitLab CI Integration
