@@ -15,7 +15,7 @@ public class ConfigReader {
     
     private static final LoggerUtil logger = LoggerUtil.getLogger(ConfigReader.class);
     private Properties properties;
-    private static final String CONFIG_PATH = "src/test/java/resources/config.properties";
+    private static final String CONFIG_PATH = "src/test/resources/config.properties";
     
     /**
      * Constructor - loads configuration from properties file

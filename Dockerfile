@@ -42,4 +42,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD mvn --version
 
 # Default command - run tests
-CMD ["mvn", "clean", "test", "-DsuiteXmlFile=src/test/java/resources/testng.xml"]
+CMD ["mvn", "clean", "test", "-DsuiteXmlFile=src/test/resources/testng.xml"]
