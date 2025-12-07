@@ -20,10 +20,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up JDK
+      - name: Set up Java
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
+          java-version: '11'
           distribution: 'temurin'
 
       - name: Cache Maven dependencies
@@ -57,21 +57,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Java
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '11'
+          java-version: '17'
           distribution: 'temurin'
 
       - name: Install Maven
         run: sudo apt-get update && sudo apt-get install -y maven
 
       - name: Run tests with TestNG reporting
+        continue-on-error: true
         run: |
           echo "Starting test execution..."
           mvn clean test -DsuiteXmlFile=src/test/resources/testng.xml
           echo "Tests completed"
-          continue-on-error: true
 
       - name:  Upload test artifacts
         if: always()
@@ -79,8 +79,8 @@ jobs:
         with:
             name: test-results
             path: |
-              target/
-                test-output/
+              target/surefire-reports/
+              target/test-output/
   
   generate_report:
       name: Generate HTML Report
@@ -92,7 +92,10 @@ jobs:
           with:
             name: test-results
             path: ./artifacts/
-        
+            
+        - name: List downloaded files
+          run: find ./artifacts -type f -name "*.xml" -o -name "*.html" | head -20
+          
         - name: Upload TestNG HTML report
           uses: actions/upload-artifact@v4
           if: always()
