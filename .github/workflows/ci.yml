@@ -94,11 +94,11 @@ jobs:
             path: ./artifacts/
         
         - name: Upload TestNG HTML report
-          uses: actions/upload-artifact@v4
           if: always()
+          uses: actions/upload-artifact@v4
           with:
             name: testng-html-report
-            path: artifacts/test-output/
+            path: artifacts/surefire-reports/
             
   build_docker:
     name: Build Docker Image
