@@ -10,7 +10,7 @@ A comprehensive, production-ready test automation framework combining **Playwrig
 - **Cross-Browser Support**: Chromium, Firefox, and WebKit
 - **Comprehensive Logging**: SLF4J + Logback with rolling file configuration
 - **CI/CD Integration**: GitLab CI/CD pipeline with Docker support
-- **Test Reporting**: Allure reporting framework
+- **Test Reporting**: TestNG reporting framework
 - **Configuration Management**: Externalized configuration via properties files
 - **Error Handling**: Robust error handling and wait strategies
 
@@ -146,7 +146,7 @@ The framework includes a complete **GitLab CI/CD pipeline** (`.gitlab-ci.yml`):
 ### Pipeline Stages
 1. **build**: Compiles the project with Maven
 2. **test**: Executes UI and API tests in Docker container
-3. **report**: Generates Allure test reports
+3. **report**: Generates TestNG test reports
 
 ### Running in Docker
 
@@ -176,18 +176,6 @@ Pipeline will automatically:
 - Publish results
 
 ## Test Reporting
-
-### Allure Report
-
-Generate and view Allure report:
-
-```bash
-# Generate report
-mvn allure:report
-
-# Serve report locally
-mvn allure:serve
-```
 
 Report includes:
 - Test execution summary
