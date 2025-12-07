@@ -25,7 +25,7 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
-          java-version: '11'
+          java-version: '17'
           distribution: 'temurin'
 
       - name: Cache Maven dependencies
@@ -65,8 +65,13 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Install Maven
-        run: sudo apt-get update && sudo apt-get install -y maven
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
       - name: Run tests with TestNG reporting
         continue-on-error: true
@@ -103,7 +108,7 @@ jobs:
           if: always()
           with:
             name: testng-html-report
-            path: artifacts/test-output/
+            path: artifacts/surefire-reports/
             
   build_docker:
     name: Build Docker Image
