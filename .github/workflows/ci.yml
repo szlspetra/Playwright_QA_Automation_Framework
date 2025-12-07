@@ -2,9 +2,11 @@ name: Playwright QA CI
 
 on:
   push:
-    branches: "master"
+      branches:
+        - '**'
   pull_request:
-    branches: "master"
+      branches:
+        - '**'
 
 env:
   MAVEN_CLI_OPTS: "-s .m2/settings.xml -DskipTests"
