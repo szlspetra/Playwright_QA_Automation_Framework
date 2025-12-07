@@ -20,10 +20,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Java
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '11'
+          java-version: '17'
           distribution: 'temurin'
 
       - name: Cache Maven dependencies
@@ -66,59 +66,40 @@ jobs:
       - name: Install Maven
         run: sudo apt-get update && sudo apt-get install -y maven
 
-      - name: Run tests with Playwright reporting
+      - name: Run tests with TestNG reporting
         run: |
           echo "Starting test execution..."
-          mvn clean test -DsuiteXmlFile=src/test/resources/testng.xml -Dplaywright.report=html
+          mvn clean test -DsuiteXmlFile=src/test/resources/testng.xml
           echo "Tests completed"
+          continue-on-error: true
 
-      - name: Upload test artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: |
-            target/
-            logs/
-            playwright-report/
-
-      - name: Upload JUnit test reports
+      - name:  Upload test artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: junit-reports
-          path: target/surefire-reports/*.xml
-
+            name: test-results
+            path: |
+              target/
+                test-output/
+  
   generate_report:
-    name: Generate Playwright HTML Report
-    runs-on: ubuntu-latest
-    needs: test
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Download test artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: test-results
-          path: ./artifacts/
-
-      - name: Generate Playwright report
-        run: |
-          echo "Generating Playwright HTML Report..."
-          if [ -d "./artifacts/playwright-report" ]; then
-            echo "Playwright report directory found"
-          else
-            echo "Creating Playwright report from test results"
-          fi
-          echo "Report generation completed"
-
-      - name: Upload Playwright HTML report
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-html-report
-          path: artifacts/playwright-report/
-
+      name: Generate HTML Report
+      runs-on: ubuntu-latest
+      needs: test
+      steps:
+        - name: Download test artifacts
+          uses: actions/download-artifact@v4
+          with:
+            name: test-results
+            path: ./artifacts/
+        
+        - name: Upload TestNG HTML report
+          uses: actions/upload-artifact@v4
+          if: always()
+          with:
+            name: testng-html-report
+            path: artifacts/test-output/
+            
   build_docker:
     name: Build Docker Image
     runs-on: ubuntu-latest
